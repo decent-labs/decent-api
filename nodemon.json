@@ -1,0 +1,7 @@
+{
+  "exec": "yarn lint && DEBUG=$LOGGING_BASE:* yarn dev",
+  "watch": [
+    "src/*"
+  ],
+  "ext": "js"
+}
