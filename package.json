@@ -9,7 +9,8 @@
     "prod": "yarn clean && yarn build && yarn server:prod",
     "server": "babel-node ./src",
     "server:prod": "node ./dist",
-    "start": "yarn prod"
+    "start": "yarn prod",
+    "test": "NODE_ENV=test mocha --recursive --require @babel/register"
   },
   "repository": "https://github.com/decentorganization/decent-api-base",
   "author": "Adam Gall <adam@decentlabs.io>",
@@ -24,7 +25,10 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/runtime": "^7.6.3",
     "babel-plugin-dynamic-import-node": "^2.3.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
+    "mocha": "^6.2.1",
     "rimraf": "^3.0.0"
   },
   "dependencies": {
