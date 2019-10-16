@@ -11,7 +11,8 @@
     "server": "babel-node ./src",
     "server:prod": "node ./dist",
     "start": "yarn prod",
-    "test": "NODE_ENV=test mocha --recursive --require @babel/register"
+    "test": "NODE_ENV=test mocha --recursive --require @babel/register",
+    "watch": "dotenv nodemon"
   },
   "repository": "https://github.com/decentorganization/decent-api-base",
   "author": "Adam Gall <adam@decentlabs.io>",
@@ -38,6 +39,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^6.2.1",
+    "nodemon": "^1.19.4",
     "rimraf": "^3.0.0"
   },
   "dependencies": {
