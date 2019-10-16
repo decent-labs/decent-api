@@ -1,0 +1,15 @@
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "dynamic-import-node",
+    [
+      "@babel/transform-runtime",
+      {
+        "regenerator": true
+      }
+    ]
+  ]
+}

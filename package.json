@@ -2,12 +2,24 @@
   "name": "api-base",
   "version": "0.0.0",
   "description": "Boilerplate API structure",
-  "main": "index.js",
+  "scripts": {
+    "build": "babel ./src --out-dir dist",
+    "dev": "NODE_ENV=development yarn server",
+    "server": "babel-node ./src"
+  },
   "repository": "https://github.com/decentorganization/decent-api-base",
   "author": "Adam Gall <adam@decentlabs.io>",
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/runtime": "^7.6.3",
+    "babel-plugin-dynamic-import-node": "^2.3.0",
     "dotenv": "^8.2.0"
   }
 }
