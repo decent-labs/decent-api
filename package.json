@@ -1,5 +1,5 @@
 {
-  "name": "api-base",
+  "name": "decent-api",
   "version": "0.0.0",
   "description": "Boilerplate API structure",
   "scripts": {
@@ -15,7 +15,7 @@
     "test": "NODE_ENV=test mocha --recursive --require @babel/register",
     "watch": "nodemon"
   },
-  "repository": "https://github.com/decentorganization/decent-api-base",
+  "repository": "https://github.com/decentorganization/decent-api",
   "author": "Adam Gall <adam@decentlabs.io>",
   "license": "MIT",
   "private": false,
