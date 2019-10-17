@@ -66,13 +66,13 @@ then go do your schema thing.
 
 other than that, don't even worry about migrations.
 
-migrations are executed upon app startup, when there are new migrations to run.
+migrations are executed upon api startup, when there are new migrations to run.
 
-you don't even need to manually create any databases, as the app startup script handles that too. the database name is based on an environment variable called `DB_NAME`.
+you don't even need to manually create any databases, as the api startup script handles that too. the database name is based on an environment variable called `DB_NAME`.
 
 when running tests, a new database is created for you upon starting tests, and destroyed after finishing tests. this database name is based off of the `NODE_ENV` environment variable, which is hard set to `test` when running tests via `yarn run` but this is all irrelevant and it disappears as soon as tests are done.
 
-in the development environment, your database sticks around between app runs (unless you `docker-compose down`, in which case it's destroyed).
+in the development environment, your database sticks around between api runs (unless you `docker-compose down`, in which case it's destroyed).
 
 ---
 

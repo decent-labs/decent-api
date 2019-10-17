@@ -4,68 +4,52 @@ import debugLib from 'debug';
 import dotenv from 'dotenv';
 import http from 'http';
 
-import appServer from './app';
-import { databaseManager } from './database';
+import { api } from './api';
+import { database } from './database';
 
 dotenv.config();
 
 const debug = debugLib(`${process.env.LOGGING_BASE}:api`);
-
 let server, port;
 
-databaseManager(process.env.DB_NAME).then(dbManager => {
-  if (!dbManager) {
-    throw new Error("unable to connect to database, not starting api");
-  }
+database(process.env.DB_NAME).then(database => {
+  if (!database) throw new Error("no database! not starting api!");
 
-  const app = appServer(dbManager.knexInstance());
+  const connectedApi = api(database);
 
   port = normalizePort(process.env.API_PORT || '3000');
-  app.set('port', port);
+  connectedApi.set('port', port);
 
-  server = http.createServer(app);
-
+  server = http.createServer(connectedApi);
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-}).catch(err => debug(err));
+}).catch(debug);
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-
-  if (port >= 0) {
-    return port;
-  }
-
+  if (isNaN(port)) return val;
+  if (port >= 0) return port;
   return false;
 };
 
 const onError = error => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+  if (error.syscall !== 'listen') throw error;
 
   const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
-  const exit = code => {
+  const exit = (code, message) => {
+    debug(message);
     process.exit(code);
   };
 
   switch (error.code) {
     case 'EACCES':
-      debug(bind + ' requires elevated privileges');
-      exit(1);
-      break;
+      return exit(1, `${bind} requires elevated privileges`);
     case 'EADDRINUSE':
-      debug(bind + ' is already in use');
-      exit(1);
-      break;
+      return exit(1, `${bind} is already in use`);
     default:
       throw error;
   }

@@ -27,18 +27,34 @@ export const databaseManager = name => {
 
   const dbManager = knexManager.databaseManagerFactory(config);
 
-  return dbManager.createDbOwnerIfNotExist().then(() => {
-    const knex = dbManager.knexInstance();
-    return knex.raw('select 1+1 as result').then(() => {
-      debug(`connected to ${process.env.NODE_ENV} database`);
-    }).catch(() => {
-      debug(`creating new ${process.env.NODE_ENV} database`);
-      return dbManager.createDb();
-    });
-  }).then(() => {
-    return dbManager.migrateDb();
-  }).then(() => {
-    debug(`${process.env.NODE_ENV} database migrated and ready to go`)
-    return dbManager;
-  }).catch(debug);
+  return dbManager.createDbOwnerIfNotExist()
+    .then(() => {
+      const knex = dbManager.knexInstance();
+      // this is how to check to see if a database is here or not
+      // i wish there were a better way
+      // if you know of one, submit a PR plz
+      return knex.raw('select 1+1 as result')
+        .then(() => debug(`connected to ${process.env.DB_NAME} database`))
+        .catch(() => {
+          debug(`creating new ${process.env.DB_NAME} database`);
+          // if we got here, then no database exists and we need to create one
+          //
+          // returning a non-error here shows a warning in the console
+          // (at least on node 10.16.3)
+          // ¯\_(ツ)_/¯
+          // we gotta do what we gotta do
+          return dbManager.createDb();
+        });
+    })
+    .then(() => dbManager.migrateDb())
+    .then(() => {
+      debug(`${process.env.DB_NAME} database migrated and ready to go`)
+      return dbManager;
+    })
+    .catch(debug);
 };
+
+export const database = name => {
+  return databaseManager(name)
+    .then(manager => manager.knexInstance());
+}

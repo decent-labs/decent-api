@@ -8,14 +8,14 @@ const gitHash = 'git rev-parse --short HEAD';
 const revision = childProcess.execSync(gitHash).toString().trim();
 const version = packageJson.version + '+' + revision;
 
-export const getRoot = app => {
+export const getRoot = api => {
   return (_, res) => {
     res.status(200).send({
       '👋': '🌎',
       name: packageJson.name,
       environment,
       version,
-      endpoints: listEndpoints(app)
+      endpoints: listEndpoints(api)
     });
   }
 };
