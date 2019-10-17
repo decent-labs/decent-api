@@ -30,15 +30,15 @@ export const databaseManager = name => {
   return dbManager.createDbOwnerIfNotExist().then(() => {
     const knex = dbManager.knexInstance();
     return knex.raw('select 1+1 as result').then(() => {
-      debug(`connected to ${process.env.NODE_ENV} database`);
+      debug(`connected to ${process.env.DB_NAME} database`);
     }).catch(() => {
-      debug(`creating new ${process.env.NODE_ENV} database`);
+      debug(`creating new ${process.env.DB_NAME} database`);
       return dbManager.createDb();
     });
   }).then(() => {
     return dbManager.migrateDb();
   }).then(() => {
-    debug(`${process.env.NODE_ENV} database migrated and ready to go`)
+    debug(`${process.env.DB_NAME} database migrated and ready to go`)
     return dbManager;
   }).catch(debug);
 };
