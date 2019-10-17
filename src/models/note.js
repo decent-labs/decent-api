@@ -1,9 +1,15 @@
 const table = 'notes';
 
+const scrub = note => {
+  if (!note) return null;
+  delete note.deleted_at;
+  return note;
+}
+
 export const create = (db, note) => {
   return new Promise((resolve, reject) => {
     return db(table).insert(note).returning('*')
-      .then(([note]) => resolve(note))
+      .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
@@ -19,7 +25,7 @@ export const list = db => {
 export const get = (db, id) => {
   return new Promise((resolve, reject) => {
     return db(table).whereNull('deleted_at').where({ id }).select('*').first()
-      .then(resolve)
+      .then(note => resolve(scrub(note)))
       .catch(reject);
   });
 };
@@ -27,7 +33,7 @@ export const get = (db, id) => {
 export const update = (db, note) => {
   return new Promise((resolve, reject) => {
     return db(table).whereNull('deleted_at').where({ id: note.id }).update({ ...note, updated_at: db.fn.now() }).returning('*')
-      .then(([note]) => resolve(note))
+      .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
