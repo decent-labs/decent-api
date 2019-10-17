@@ -5,14 +5,15 @@
   "scripts": {
     "build": "babel ./src --out-dir dist",
     "clean": "rimraf dist",
-    "dev": "NODE_ENV=development yarn server",
-    "lint": "eslint .",
+    "dev": "NODE_ENV=development dotenv yarn dev:logs",
+    "dev:logs": "DEBUG=$LOGGING_BASE:* yarn server",
+    "lint": "eslint . --ignore-pattern '/dist/*'",
     "prod": "yarn clean && yarn build && yarn server:prod",
     "server": "babel-node ./src",
-    "server:prod": "node ./dist",
+    "server:prod": "NODE_ENV=production node ./dist",
     "start": "yarn prod",
     "test": "NODE_ENV=test mocha --recursive --require @babel/register",
-    "watch": "dotenv nodemon"
+    "watch": "nodemon"
   },
   "repository": "https://github.com/decentorganization/decent-api-base",
   "author": "Adam Gall <adam@decentlabs.io>",
@@ -30,6 +31,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
+    "dotenv-cli": "^3.0.0",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-config-standard": "^14.1.0",
@@ -45,7 +47,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "debug": "^4.1.1",
-    "dotenv-cli": "^3.0.0",
     "express": "^4.17.1",
     "express-list-endpoints": "^4.0.1",
     "knex": "^0.19.5",

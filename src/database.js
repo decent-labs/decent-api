@@ -1,9 +1,6 @@
 import debugLib from 'debug';
-import dotenv from 'dotenv';
 import path from 'path';
 import knexManager from 'knex-db-manager';
-
-dotenv.config();
 
 const debug = debugLib(`${process.env.LOGGING_BASE}:database`);
 

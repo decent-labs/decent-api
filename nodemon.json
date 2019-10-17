@@ -1,5 +1,5 @@
 {
-  "exec": "yarn lint && DEBUG=$LOGGING_BASE:* yarn dev",
+  "exec": "yarn lint && yarn dev",
   "watch": [
     "src/*"
   ],
