@@ -1,20 +1,22 @@
-import { makeError } from '../middleware';
-
 const table = 'notes';
+
+const scrub = note => {
+  if (!note) return null;
+  delete note.deleted_at;
+  return note;
+}
 
 export const create = (db, note) => {
   return new Promise((resolve, reject) => {
-    if (!note.note) makeError(422, 'invalid input');
-
     return db(table).insert(note).returning('*')
-      .then(([note]) => resolve(note))
+      .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
 export const list = db => {
   return new Promise((resolve, reject) => {
-    return db.from(table).select('id', 'note').whereNull('deleted_at')
+    return db(table).whereNull('deleted_at').select('id', 'note')
       .then(resolve)
       .catch(reject);
   });
@@ -22,35 +24,24 @@ export const list = db => {
 
 export const get = (db, id) => {
   return new Promise((resolve, reject) => {
-    return db.from(table).select('*').whereNull('deleted_at').where({ id }).first()
-      .then(note => {
-        if (!note) makeError(404, 'note does not exist');
-        resolve(note);
-      })
+    return db(table).whereNull('deleted_at').where({ id }).select('*').first()
+      .then(note => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
 export const update = (db, note) => {
-  if (!note.note) makeError(422, 'invalid input');
-
   return new Promise((resolve, reject) => {
-    return db(table).whereNull('deleted_at').where({ id: note.id }).update(note).returning('*')
-      .then(([note]) => {
-        if (!note) makeError(404, 'note does not exist');
-        return resolve(note);
-      })
+    return db(table).whereNull('deleted_at').where({ id: note.id }).update({ ...note, updated_at: db.fn.now() }).returning('*')
+      .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
 export const remove = (db, id) => {
   return new Promise((resolve, reject) => {
-    return db(table).whereNull('deleted_at').where({ id }).update({ deleted_at: db.fn.now() }).returning('*')
-      .then(([note]) => {
-        if (!note) makeError(404, 'note does not exist');
-        return resolve(note);
-      })
+    return db(table).whereNull('deleted_at').where({ id }).update({ deleted_at: db.fn.now() }).returning('id')
+      .then(([id]) => resolve(id))
       .catch(reject);
   });
 };

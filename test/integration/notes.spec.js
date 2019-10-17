@@ -66,7 +66,7 @@ describe(`${url} route tests`, () => {
       it('should return an error', () => {
         response.body.should.have.property('error');
         response.body.error.should.be.a('String');
-        response.body.error.should.eql('invalid input');
+        response.body.error.should.eql('invalid note input');
       });
     });
   });
@@ -246,7 +246,7 @@ describe(`${url} route tests`, () => {
         it('should return an error', () => {
           response.body.should.have.property('error');
           response.body.error.should.be.a('String');
-          response.body.error.should.eql('invalid input');
+          response.body.error.should.eql('invalid note input');
         });
       });
     });

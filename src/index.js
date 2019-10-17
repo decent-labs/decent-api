@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import http from 'http';
 
 import appServer from './app';
-import { database } from './database';
+import { databaseManager } from './database';
 
 dotenv.config();
 
@@ -13,12 +13,12 @@ const debug = debugLib(`${process.env.LOGGING_BASE}:api`);
 
 let server, port;
 
-database(process.env.DB_NAME).then(db => {
-  if (!db) {
+databaseManager(process.env.DB_NAME).then(dbManager => {
+  if (!dbManager) {
     throw new Error("unable to connect to database, not starting api");
   }
 
-  const app = appServer(db)
+  const app = appServer(dbManager.knexInstance());
 
   port = normalizePort(process.env.API_PORT || '3000');
   app.set('port', port);
