@@ -7,7 +7,7 @@ dotenv.config();
 
 const debug = debugLib(`${process.env.LOGGING_BASE}:database`);
 
-export const database = name => {
+export const databaseManager = name => {
   const config = {
     knex: {
       client: 'postgres',
@@ -43,5 +43,5 @@ export const database = name => {
   }).then(() => {
     debug(`${process.env.NODE_ENV} database migrated and ready to go`)
     return dbManager;
-  }).catch(err => debug(err));
+  }).catch(debug);
 };
