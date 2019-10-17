@@ -38,10 +38,4 @@ export const errors = app => {
     res.status(error.statusCode || 500).json(prod ? publicMessage : internalMessage);
     debug(internalMessage);
   });
-}
-
-export const makeError = (code, message) => {
-  const error = new Error(message);
-  error.code = code;
-  throw error;
 };
