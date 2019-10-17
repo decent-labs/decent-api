@@ -3,17 +3,15 @@ import express from 'express';
 import { cors, encoding, logging, storage, errors } from './middleware';
 import { router } from './router';
 
-const app = database => {
-  const application = express();
+export const api = database => {
+  const server = express();
 
-  cors(application);
-  encoding(application);
-  logging(application);
-  storage(application, database);
-  router(application);
-  errors(application);
+  cors(server);
+  encoding(server);
+  logging(server);
+  storage(server, database);
+  router(server);
+  errors(server);
 
-  return application;
+  return server;
 };
-
-export default app;

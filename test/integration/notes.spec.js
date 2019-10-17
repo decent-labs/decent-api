@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-import { testApp } from '../global.spec';
+import { testApi } from '../global.spec';
 
 chai.use(chaiHttp);
 const should = chai.should();
@@ -9,15 +9,15 @@ const should = chai.should();
 const url = '/notes';
 
 describe(`${url} route tests`, () => {
-  let app;
+  let api;
 
-  before(() => (app = testApp()));
+  before(() => (api = testApi()));
 
   describe(`POST ${url}`, () => {
     let response;
 
     const request = async body => {
-      response = await chai.request(app).post(url).send(body);
+      response = await chai.request(api).post(url).send(body);
     };
 
     describe('valid request', () => {
@@ -83,10 +83,10 @@ describe(`${url} route tests`, () => {
 
       before(async () => {
         for (const note of notes) {
-          await chai.request(app).post(url).send({ note });
+          await chai.request(api).post(url).send({ note });
         }
 
-        response = await chai.request(app).get(url);
+        response = await chai.request(api).get(url);
       });
 
       it('should have 200 status', () => {
@@ -117,9 +117,9 @@ describe(`${url} route tests`, () => {
       let id;
 
       before(async () => {
-        const create = await chai.request(app).post(url).send(body);
+        const create = await chai.request(api).post(url).send(body);
         id = create.body.id;
-        response = await chai.request(app).get(`${url}/${id}`);
+        response = await chai.request(api).get(`${url}/${id}`);
       });
 
       it('should have 200 status', () => {
@@ -150,7 +150,7 @@ describe(`${url} route tests`, () => {
 
     describe('invalid request', () => {
       before(async () => {
-        response = await chai.request(app).get(`${url}/999999999`);
+        response = await chai.request(api).get(`${url}/999999999`);
       });
 
       it('should have 404 status', () => {
@@ -177,8 +177,8 @@ describe(`${url} route tests`, () => {
       const newBody = { note: 'done taking out the trash' };
 
       before(async () => {
-        const create = await chai.request(app).post(url).send(body);
-        response = await chai.request(app).patch(`${url}/${create.body.id}`).send(newBody);
+        const create = await chai.request(api).post(url).send(body);
+        response = await chai.request(api).patch(`${url}/${create.body.id}`).send(newBody);
       });
 
       it('should have 200 status', () => {
@@ -207,8 +207,8 @@ describe(`${url} route tests`, () => {
         const newBody = { note: 'done mopping the floor' };
 
         before(async () => {
-          await chai.request(app).post(url).send(body);
-          response = await chai.request(app).patch(`${url}/99999999`).send(newBody);
+          await chai.request(api).post(url).send(body);
+          response = await chai.request(api).patch(`${url}/99999999`).send(newBody);
         });
 
         it('should have 404 status', () => {
@@ -231,8 +231,8 @@ describe(`${url} route tests`, () => {
         const newBody = {};
 
         before(async () => {
-          const create = await chai.request(app).post(url).send(body);
-          response = await chai.request(app).patch(`${url}/${create.body.id}`).send(newBody);
+          const create = await chai.request(api).post(url).send(body);
+          response = await chai.request(api).patch(`${url}/${create.body.id}`).send(newBody);
         });
 
         it('should have 422 status', () => {
@@ -260,9 +260,9 @@ describe(`${url} route tests`, () => {
       let id;
 
       before(async () => {
-        const create = await chai.request(app).post(url).send(body);
+        const create = await chai.request(api).post(url).send(body);
         id = create.body.id;
-        response = await chai.request(app).delete(`${url}/${id}`);
+        response = await chai.request(api).delete(`${url}/${id}`);
       });
 
       it('should have 204 status', () => {
@@ -278,9 +278,9 @@ describe(`${url} route tests`, () => {
       const body = { note: 'feed the dog' };
 
       before(async () => {
-        const create = await chai.request(app).post(url).send(body);
-        await chai.request(app).delete(`${url}/${create.body.id}`);
-        response = await chai.request(app).get(`${url}/${create.body.id}`);
+        const create = await chai.request(api).post(url).send(body);
+        await chai.request(api).delete(`${url}/${create.body.id}`);
+        response = await chai.request(api).get(`${url}/${create.body.id}`);
       });
 
       it('should have 404 status', () => {
@@ -303,8 +303,8 @@ describe(`${url} route tests`, () => {
         const body = { note: 'mow the lawn' };
 
         before(async () => {
-          await chai.request(app).post(url).send(body);
-          response = await chai.request(app).delete(`${url}/99999999`);
+          await chai.request(api).post(url).send(body);
+          response = await chai.request(api).delete(`${url}/99999999`);
         });
 
         it('should have 404 status', () => {

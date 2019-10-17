@@ -4,7 +4,7 @@ import debugLib from 'debug';
 import dotenv from 'dotenv';
 import http from 'http';
 
-import appServer from './app';
+import { api } from './api';
 import { database } from './database';
 
 dotenv.config();
@@ -15,13 +15,12 @@ let server, port;
 database(process.env.DB_NAME).then(database => {
   if (!database) throw new Error("no database! not starting api!");
 
-  const app = appServer(database);
+  const connectedApi = api(database);
 
   port = normalizePort(process.env.API_PORT || '3000');
-  app.set('port', port);
+  connectedApi.set('port', port);
 
-  server = http.createServer(app);
-
+  server = http.createServer(connectedApi);
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);

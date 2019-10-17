@@ -1,21 +1,21 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-import { testApp } from '../global.spec';
+import { testApi } from '../global.spec';
 
 chai.use(chaiHttp);
 chai.should();
 
 describe('/ route tests', () => {
-  let app;
+  let api;
   const url = '/';
 
-  before(() => (app = testApp()));
+  before(() => (api = testApi()));
 
   describe('GET /', () => {
     let response;
 
-    before(() => chai.request(app).get(url).then(res => (response = res)));
+    before(() => chai.request(api).get(url).then(res => (response = res)));
 
     it('should have 200 status', () => {
       response.should.have.status(200);
