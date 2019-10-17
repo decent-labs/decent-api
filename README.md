@@ -42,13 +42,29 @@ startup a database instance
 $ docker-compose up -d
 ```
 
-run the test suite
+### THEN
+
+run the linter manually
+
+```
+$ yarn lint
+```
+
+run the test suite manually
 
 ```
 $ yarn test
 ```
 
-start your development environment
+start your development api server manually
+
+```
+$ yarn dev
+```
+
+### OR
+
+lint, test, serve, and reload after changes all at once
 
 ```
 $ yarn watch
