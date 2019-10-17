@@ -23,8 +23,8 @@ export const databaseManager = name => {
       }
     },
     dbManager: {
-      superUser: process.env.DB_USER,
-      superPassword: process.env.DB_PASS
+      superUser: process.env.DB_USER || 'postgres',
+      superPassword: process.env.DB_PASS || 'postgres'
     }
   };
 
