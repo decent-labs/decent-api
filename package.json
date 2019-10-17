@@ -8,6 +8,7 @@
     "dev": "NODE_ENV=development dotenv yarn dev:logs",
     "dev:logs": "DEBUG=$LOGGING_BASE:* yarn server",
     "lint": "eslint . --ignore-pattern '/dist/*'",
+    "migration": "knex migrate:make --migrations-directory ./src/migrations",
     "prod": "yarn clean && yarn build && yarn server:prod",
     "server": "babel-node ./src",
     "server:prod": "NODE_ENV=production node ./dist",
