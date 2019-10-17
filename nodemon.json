@@ -1,7 +1,8 @@
 {
-  "exec": "yarn lint && yarn dev",
+  "exec": "yarn lint && yarn test && yarn dev",
   "watch": [
-    "src/*"
+    "src/*",
+    "test/*"
   ],
   "ignore": [
     "src/database/migrations/*"
