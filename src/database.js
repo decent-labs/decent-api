@@ -53,3 +53,8 @@ export const databaseManager = name => {
     })
     .catch(debug);
 };
+
+export const database = name => {
+  return databaseManager(name)
+    .then(manager => manager.knexInstance());
+}
