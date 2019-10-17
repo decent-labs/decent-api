@@ -1,4 +1,4 @@
-# decent api base
+# decent api
 
 this project implements a _really nice_ boilerplate api using
 
