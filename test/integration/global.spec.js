@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import { api } from '../src/api';
-import { databaseManager } from '../src/database';
-import { setDb } from '../src/database/access';
+import { api } from '../../src/api';
+import { databaseManager } from '../../src/database';
+import { setDb } from '../../src/database/access';
 
 dotenv.config();
 
