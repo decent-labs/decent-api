@@ -1,43 +1,47 @@
-import { database, scrub } from '.';
+import { scrub } from '.';
 
-const create = note => {
+const table = 'notes';
+
+const create = (db, note) => {
   return new Promise((resolve, reject) => {
-    return database()('notes').insert(note).returning('*')
+    return db(table).insert(note).returning('*')
       .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
-const list = () => {
+const list = db => {
   return new Promise((resolve, reject) => {
-    return database()('notes').whereNull('deleted_at').select('id', 'note')
+    return db(table).whereNull('deleted_at').select('id', 'note')
       .then(resolve)
       .catch(reject);
   });
 };
 
-const get = id => {
+const get = (db, id) => {
   return new Promise((resolve, reject) => {
-    return database()('notes').whereNull('deleted_at').where({ id }).select('*').first()
+    return db(table).whereNull('deleted_at').where({ id }).select('*').first()
       .then(note => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
-const update = note => {
+const update = (db, note) => {
   return new Promise((resolve, reject) => {
-    return database()('notes').whereNull('deleted_at').where({ id: note.id }).update({ ...note, updated_at: database().fn.now() }).returning('*')
+    return db(table).whereNull('deleted_at').where({ id: note.id }).update({ ...note, updated_at: db.fn.now() }).returning('*')
       .then(([note]) => resolve(scrub(note)))
       .catch(reject);
   });
 };
 
-const remove = id => {
+const remove = (db, id) => {
   return new Promise((resolve, reject) => {
-    return database()('notes').whereNull('deleted_at').where({ id }).update({ deleted_at: database().fn.now() }).returning('id')
+    return db(table).whereNull('deleted_at').where({ id }).update({ deleted_at: db.fn.now() }).returning('id')
       .then(([id]) => resolve(id))
       .catch(reject);
   });
 };
 
-export default { create, list, get, update, remove };
+export const notes = (db, crud) => {
+  return crud(db, { create, list, get, update, remove })
+};
