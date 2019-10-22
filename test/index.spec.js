@@ -1,1 +1,3 @@
-require('./integration');
+import { integration } from './integration';
+
+integration();

@@ -1,27 +1,29 @@
 import dotenv from 'dotenv';
 import { api } from '../../src/api';
-import { databaseManager } from '../../src/database';
-import { setDb } from '../../src/database/access';
+import { databaseSetup } from '../../src/database';
+
+import { root } from './root';
+import { notes } from './notes';
 
 dotenv.config();
 
-let _testDbManager;
-let _testApi;
+export const integration = () => {
+  describe("integration", () => {
+    let _testDbManager;
+    let _testApi;
 
-describe("integration", function () {
-  before(() => {
-    return databaseManager(process.env.NODE_ENV).then(dbManager => {
-      _testDbManager = dbManager;
-      _testApi = api(setDb(dbManager.knexInstance()));
+    before(() => {
+      return databaseSetup(process.env.NODE_ENV).then(db => {
+        _testDbManager = db.manager;
+        _testApi = api(db.database);
+      });
+    });
+
+    root(() => _testApi, '/');
+    notes(() => _testApi, '/notes');
+
+    after(() => {
+      return _testDbManager.dropDb().then(() => _testDbManager.close());
     });
   });
-
-  require('./root');
-  require('./notes');
-
-  after(() => {
-    return _testDbManager.dropDb().then(() => _testDbManager.close());
-  });
-});
-
-export const testApi = () => _testApi;
+};
