@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import { api } from '../../src/api';
 import { databaseSetup } from '../../src/database';
 
+import { root } from './root';
+import { notes } from './notes';
+
 dotenv.config();
 
 let _testDbManager;
@@ -15,8 +18,8 @@ describe("integration", function () {
     });
   });
 
-  require('./root');
-  require('./notes');
+  root(() => _testApi, '/');
+  notes(() => _testApi, '/notes');
 
   after(() => {
     return _testDbManager.dropDb().then(() => _testDbManager.close());
