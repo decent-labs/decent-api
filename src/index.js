@@ -6,6 +6,7 @@ import http from 'http';
 
 import { api } from './api';
 import { database } from './database';
+import { setDb } from './database/access';
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ let server, port;
 database(process.env.DB_NAME).then(database => {
   if (!database) throw new Error("no database! not starting api!");
 
-  const connectedApi = api(database);
+  const connectedApi = api(setDb(database));
 
   port = normalizePort(process.env.API_PORT || '3000');
   connectedApi.set('port', port);
