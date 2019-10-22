@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-import { testApi } from './global.spec';
+import { testApi } from '.';
 
 chai.use(chaiHttp);
 chai.should();

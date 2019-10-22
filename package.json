@@ -13,7 +13,7 @@
     "server": "babel-node ./src",
     "server:prod": "NODE_ENV=production node ./dist",
     "start": "yarn prod",
-    "test": "NODE_ENV=test mocha --recursive --require @babel/register",
+    "test": "NODE_ENV=test mocha --require @babel/register",
     "watch": "nodemon"
   },
   "repository": "https://github.com/decentorganization/decent-api",
