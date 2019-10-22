@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import { api } from '../../src/api';
-import { databaseManager } from '../../src/database';
-import { setDb } from '../../src/database/access';
+import { databaseSetup } from '../../src/database';
 
 dotenv.config();
 
@@ -10,9 +9,9 @@ let _testApi;
 
 describe("integration", function () {
   before(() => {
-    return databaseManager(process.env.NODE_ENV).then(dbManager => {
-      _testDbManager = dbManager;
-      _testApi = api(setDb(dbManager.knexInstance()));
+    return databaseSetup(process.env.NODE_ENV).then(db => {
+      _testDbManager = db.manager;
+      _testApi = api(db.database);
     });
   });
 

@@ -2,9 +2,11 @@ import debugLib from 'debug';
 import path from 'path';
 import knexManager from 'knex-db-manager';
 
+import { setDatabase, databaseInterface } from './interface'
+
 const debug = debugLib(`${process.env.LOGGING_BASE}:database`);
 
-export const databaseManager = name => {
+export const databaseSetup = name => {
   const config = {
     knex: {
       client: 'postgres',
@@ -49,12 +51,8 @@ export const databaseManager = name => {
     .then(() => dbManager.migrateDb())
     .then(() => {
       debug(`${process.env.DB_NAME} database migrated and ready to go`)
-      return dbManager;
+      setDatabase(dbManager.knexInstance());
+      return { manager: dbManager, database: databaseInterface };
     })
     .catch(debug);
 };
-
-export const database = name => {
-  return databaseManager(name)
-    .then(manager => manager.knexInstance());
-}

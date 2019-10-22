@@ -5,18 +5,17 @@ import dotenv from 'dotenv';
 import http from 'http';
 
 import { api } from './api';
-import { database } from './database';
-import { setDb } from './database/access';
+import { databaseSetup } from './database';
 
 dotenv.config();
 
 const debug = debugLib(`${process.env.LOGGING_BASE}:api`);
 let server, port;
 
-database(process.env.DB_NAME).then(database => {
-  if (!database) throw new Error("no database! not starting api!");
+databaseSetup(process.env.DB_NAME).then(db => {
+  if (!db) throw new Error("no database! not starting api!");
 
-  const connectedApi = api(setDb(database));
+  const connectedApi = api(db.database);
 
   port = normalizePort(process.env.API_PORT || '3000');
   connectedApi.set('port', port);
