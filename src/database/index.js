@@ -2,7 +2,7 @@ import debugLib from 'debug';
 import path from 'path';
 import knexManager from 'knex-db-manager';
 
-import { setDatabase, databaseInterface } from './interface'
+import { setDatabase } from './interface'
 
 const debug = debugLib(`${process.env.LOGGING_BASE}:database`);
 
@@ -43,16 +43,17 @@ export const databaseSetup = name => {
           //
           // returning a non-error here shows a warning in the console
           // (at least on node 10.16.3)
-          // ¯\_(ツ)_/¯
-          // we gotta do what we gotta do
+          // ¯\_(ツ)_/¯ we gotta do what we gotta do
           return dbManager.createDb();
         });
     })
     .then(() => dbManager.migrateDb())
     .then(() => {
       debug(`${process.env.DB_NAME} database migrated and ready to go`)
-      setDatabase(dbManager.knexInstance());
-      return { manager: dbManager, database: databaseInterface };
+      return {
+        manager: dbManager,
+        database: setDatabase(dbManager.knexInstance())
+      };
     })
     .catch(debug);
 };

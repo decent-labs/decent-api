@@ -1,13 +1,9 @@
-import notes from './notes';
-
-let _database;
+import { notes } from './notes';
 
 export const setDatabase = database => {
-  _database = database;
-};
-
-export const database = () => {
-  return _database;
+  return {
+    notes: notes(database, crud)
+  }
 };
 
 export const scrub = resource => {
@@ -16,6 +12,12 @@ export const scrub = resource => {
   return resource;
 };
 
-export const databaseInterface = {
-  notes
+const crud = (db, implementation) => {
+  return {
+    create: resource => implementation.create(db, resource),
+    list: () => implementation.list(db),
+    get: id => implementation.get(db, id),
+    update: resource => implementation.update(db, resource),
+    remove: id => implementation.remove(db, id)
+  };
 };
