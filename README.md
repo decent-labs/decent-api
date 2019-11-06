@@ -22,6 +22,17 @@ a full set of crud operations for "notes" exists at the `/notes` endpoint. notes
 
 a full integration test suite is included.
 
+## read more
+
+the code in this repo doesn't include many comments, because yuck. if you'd like to read more about the inspiration and reasoning behind the design decisions made in this codebase, follow along with the blog post series!
+
+* The Modern API, Part 1
+  * [decent labs blog](https://blog.decentlabs.io/the-modern-api-part-1/)
+  * [medium blog](https://medium.com/decentlabs/the-modern-api-part-1-719a10d4817a?source=friends_link&sk=cbe608ca2f551bdfc8619c54e724e970)
+* The Modern API, Part 2
+  * [decent labs blog](https://blog.decentlabs.io/the-modern-api-part-2/)
+  * [medium blog](https://medium.com/decentlabs/the-modern-api-part-2-6ed2bcbd9857?source=friends_link&sk=7213ca0e8b53e4081a085daaf2faf264)
+
 ## development setup
 
 install the project dependencies
